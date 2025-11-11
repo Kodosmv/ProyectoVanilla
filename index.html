@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="formulario" novalidate>
+        <div>
+            <label for="nombre" >Introduce tu nombre: </label>
+            <input type="text" id="nombre" name="nombre">
+
+        </div>
+        <button type="submit" id="boton" >guardar</button>
+    </form>
+    <script>
+        let enviar = document.getElementById('boton');
+        let nombre = document.getElementById('nombre');
+        let form = document.getElementById('formulario')
+        enviar.addEventListener('click', function(){
+            localStorage.setItem("nombre", nombre.value);
+
+        })
+        let nomGuar = localStorage.getItem('nombre');
+        if(nomGuar){
+            alert('Hola ' + nomGuar);
+            form.style.display="none";
+            
+        }
+        setTimeout(()=> window.location.reload(),5000);
+        // para para que vuelva a aparecer el form borramos el nombre guardado
+        // localStorage.clear();
+
+    </script>
+</body>
+</html>
