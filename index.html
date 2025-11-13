@@ -1,37 +1,116 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Preguntas V/F - Simple</title>
+  
 </head>
 <body>
-    <form id="formulario" novalidate>
-        <div>
-            <label for="nombre" >Introduce tu nombre: </label>
-            <input type="text" id="nombre" name="nombre">
 
-        </div>
-        <button type="submit" id="boton" >guardar</button>
-    </form>
-    <script>
-        let enviar = document.getElementById('boton');
-        let nombre = document.getElementById('nombre');
-        let form = document.getElementById('formulario')
-        enviar.addEventListener('click', function(){
-            localStorage.setItem("nombre", nombre.value);
+  <h1>Preguntas V/F (muy simple)</h1>
 
-        })
-        let nomGuar = localStorage.getItem('nombre');
-        if(nomGuar){
-            alert('Hola ' + nomGuar);
-            form.style.display="none";
-            
-        }
-        setTimeout(()=> window.location.reload(),5000);
-        // para para que vuelva a aparecer el form borramos el nombre guardado
-        // localStorage.clear();
+  <form id="form">
+    <label>Pregunta
+      <input id="text" required />
+    </label>
 
-    </script>
+    <label>Respuesta
+      <select id="answer" required>
+        <option value="">-- elegir --</option>
+        <option value="true">Verdadero</option>
+        <option value="false">Falso</option>
+      </select>
+    </label>
+
+    <label>Puntuación (número)
+      <input id="score" type="number" min="1" value="1" required />
+    </label>
+
+    <button type="submit">Añadir</button>
+  </form>
+
+  <h2>Preguntas guardadas</h2>
+  <ul id="list"></ul>
+
+  <script>
+    // ELEMENTOS
+    const form = document.getElementById('form');
+    const inputText = document.getElementById('text');
+    const inputAnswer = document.getElementById('answer');
+    const inputScore = document.getElementById('score');
+    const list = document.getElementById('list');
+
+    // LEE preguntas desde localStorage o crea array vacío
+    let questions = JSON.parse(localStorage.getItem('questions') || '[]');
+
+    // Función que dibuja la lista en la página
+    function render() {
+      list.innerHTML = ''; // vacía la lista visual
+      if (questions.length === 0) {
+        const li = document.createElement('li');
+        li.textContent = 'No hay preguntas aún.';
+        list.appendChild(li);
+        return;
+      }
+
+      questions.forEach((q, i) => {
+        const li = document.createElement('li');
+
+        const left = document.createElement('div');
+        left.innerHTML = `<strong>${escapeHtml(q.text)}</strong><div class="small">Respuesta: ${q.answer === 'true' ? 'Verdadero' : 'Falso'} · Puntos: ${q.score}</div>`;
+
+        const btn = document.createElement('button');
+        btn.textContent = 'Eliminar';
+        btn.className = 'del';
+        btn.onclick = () => {
+          questions.splice(i, 1);             // quita del array
+          saveAndRender();                   // guarda y vuelve a dibujar
+        };
+
+        li.appendChild(left);
+        li.appendChild(btn);
+        list.appendChild(li);
+      });
+    }
+
+    // Guarda en localStorage y vuelve a dibujar
+    function saveAndRender() {
+      localStorage.setItem('questions', JSON.stringify(questions));
+      render();
+    }
+
+    // Maneja envío del formulario
+    form.onsubmit = function(e) {
+      e.preventDefault(); // evita recargar la página
+
+      const text = inputText.value.trim();
+      const answer = inputAnswer.value;
+      const score = Number(inputScore.value);
+
+      if (!text || (answer !== 'true' && answer !== 'false') || !Number.isFinite(score)) {
+        alert('Rellena bien los campos.');
+        return;
+      }
+
+      // Añade la nueva pregunta
+      questions.push({ text, answer, score });
+      saveAndRender();
+
+      // limpia el formulario
+      form.reset();
+      inputScore.value = 1;
+      inputText.focus();
+    };
+
+    // Pequeña función para evitar inyección sencilla en el texto mostrado
+    function escapeHtml(s) {
+      return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    // Al cargar la página, dibuja lo que hay en storage
+    render();
+  </script>
+
 </body>
 </html>
