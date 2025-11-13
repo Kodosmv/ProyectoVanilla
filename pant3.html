@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Preguntas </title>
+</head>
+<body>
+
+   
+
+    <form id="form">
+        <label>Pregunta
+            <textarea id="preg" required></textarea> 
+        </label>
+        <br>
+        <label id="resp" required>Respuesta
+            <input type="radio" value="true">Verdadero</input>
+            <input type="radio" value="false">Falso</input>
+            
+        </label>
+        <br>
+        <label>Puntuación 
+            <input id="punt" type="number" min="1" value="1" required />
+        </label>
+
+        <button type="submit">Guardar</button>
+        <button type="button"><a href="pant2.html">Atrás</a></button>
+    </form>
+
+    <h2>Preguntas guardadas</h2>
+    <ul id="list"></ul>
+
+</body>
+</html>
