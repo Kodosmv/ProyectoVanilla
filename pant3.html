@@ -1,35 +1,59 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Preguntas </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Preguntas</title>
 </head>
 <body>
+    <style>
+        body{
+            box-sizing: border-box;
+            display: flex;
+        }
+        div{
+            gap: 50px;
+            display: flex;
+        }
+        li{
+            list-style: none;
+        }
+    </style>
 
-   
+ 
+    <div>
+        <form id="formPreg">
+            <h2>Crear pregunta</h2>
 
-    <form id="form">
-        <label>Pregunta
-            <textarea id="preg" required></textarea> 
-        </label>
-        <br>
-        <label id="resp" required>Respuesta
-            <input type="radio" value="true">Verdadero</input>
-            <input type="radio" value="false">Falso</input>
+            <label for="pregunta">Pregunta:</label><br>
+            <input type="text" id="pregunta" required><br><br>
+
+            <label>Respuesta:</label><br>
+            <input type="radio" name="respuesta" value="Verdadero" id="respV">
+            <label for="respV">Verdadero</label>
+
+            <input type="radio" name="respuesta" value="Falso" id="respF">
+            <label for="respF">Falso</label>
+            <br><br>
+
+            <label for="puntuacion">Puntuación:</label><br>
+            <input type="number" id="puntuacion" min="1" max="10" value="1"><br><br>
+
+            <button type="submit" id="btnG">Guardar</button>
+            <button type="button" id="btnV">Atrás</button>
+
+        </form>
+        <section>
+            <h3>Preguntas guardadas:</h3>
+            <ul id="lista">
+                
+            </ul>
             
-        </label>
-        <br>
-        <label>Puntuación 
-            <input id="punt" type="number" min="1" value="1" required />
-        </label>
 
-        <button type="submit">Guardar</button>
-        <button type="button"><a href="pant2.html">Atrás</a></button>
-    </form>
-
-    <h2>Preguntas guardadas</h2>
-    <ul id="list"></ul>
-
+            <p id="estado"></p>
+        </section>
+    </div>
+   
+    <script src="pag3.js" defer></script>
 </body>
 </html>
